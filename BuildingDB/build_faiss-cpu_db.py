@@ -2,7 +2,7 @@ import asyncio
 from konlpy.tag import Okt
 async def build_faiss_cpu_db(file_path):
     import csv
-    reader = csv.reader(open('../../../capstone copy/AI/tmp/filtered_meta_data.csv', 'r', encoding='utf-8'))
+    reader = csv.reader(open('../Data_Cleaning/10000recipe/Tagged_Ingredients.csv', 'r', encoding='utf-8'))
     Documents = []
 
     class Document:
@@ -16,7 +16,7 @@ async def build_faiss_cpu_db(file_path):
 
     for row in reader:
         page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
-        metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[2]}
+        metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
         Documents.append(Document(page_content, metadata))
 
     Documents = Documents[1:]
@@ -78,7 +78,7 @@ async def main():
         query = input("검색할 쿼리를 입력하세요: ")
         if query == 'exit':
             break
-        await search_faiss_cpu_db(query, db)
+        print(await search_faiss_cpu_db(query, db))
 
 if __name__ == '__main__':
     asyncio.run(main())
