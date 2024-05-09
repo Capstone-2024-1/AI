@@ -22,7 +22,7 @@ async def search_faiss_cpu_db(query, db, k=5):
     is_food = True
     if score > 0.10:
         is_ambiguous = True
-    elif score > 0.50:
+    if score > 0.50:
         is_food = False
     ingredients = docs_and_scores[0][0].metadata['ingredients']
     ingredients = ingredients.replace('\b', '').replace('\n', '').replace('\t', '').strip()
