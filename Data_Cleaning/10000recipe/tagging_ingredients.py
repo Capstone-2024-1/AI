@@ -2,20 +2,18 @@ import os
 import csv
 
 food_categories = {
-    "Fruits": ["Apple", "Kiwi", "Peach", "Banana", "Mango", "Other fruits"],
-    "Nuts": ["Walnut", "Almond", "Pistachio", "Hazelnut", "Pinenuts", "Peanut", "Other nuts"],
-    "Herbage Crop": ["Onion", "Garlic", "Green onion", "Chives", "Other herbage crop"],
-    "Root Vegetables": ["Potato", "Sweet potato", "Radish", "wild chive", "Other root vegetables"],
-    "Fruiting Vegetables": ["Cucumber", "Chilly", "Tomato", "Other fruiting vegetables"],
-    "Grains": ["Rice", "Wheat", "Corn", "Buckwheat", "Beans", "Other grains"],
-    "Meat": ["Beef", "Pork","Chicken", "Duck", "Lamb", "Horse meat"],
-    "Eggs": ["Eggs"],
-    "Seafood": ["Other seafood"],
-    "Fish": ["Mackerel", "Other fish", "Other mollusks"],
-    "Crustaceans": ["Shrimp", "Crab", "Other crustaceans"],
-    "Shellfish": ["Abalone", "Oyster", "Mussel", "Other shellfish"],
-    "Seasonings": ["Pepper",  "Pepper", "Ginger", "Honey", "Other seasonings"],
+    "Crustaceans": ["Shrimp", "Crab", "Other crustaceans","Abalone", "Oyster", "Mussel", "Other shellfish"],
     "Dairy": ["Milk", "Soy milk", "Cheese", "Butter", "Other dairy products"],
+    "Eggs": ["Eggs"],
+    "Fish": ["Mackerel", "Other fish", "Other mollusks", "Other seafood"],
+    "Fruiting Vegetables": ["Cucumber", "Chilly", "Tomato", "Other fruiting vegetables"],
+    "Fruits": ["Apple", "Kiwi", "Peach", "Banana", "Mango", "Other fruits"],
+    "Grains": ["Rice", "Wheat", "Corn", "Buckwheat", "Beans", "Barley", "Other grains"],
+    "Herbage Crop": ["Onion", "Garlic", "Green onion", "Chives", "Other herbage crop"],
+    "Meat": ["Beef", "Pork","Chicken", "Duck", "Lamb", "Horse meat"],
+    "Nuts": ["Walnut", "Almond", "Pistachio", "Hazelnut", "Pinenuts", "Peanut", "Other nuts"],
+    "Root Vegetables": ["Potato", "Sweet potato", "Radish", "wild chive", "Other root vegetables"],
+    "Seasonings": ["Pepper",  "Pepper", "Ginger", "Honey", "Other seasonings"],
 }
 
 def find_filltered_name(ingredient):
