@@ -13,13 +13,13 @@ async def startup_event():
 
 @app.get("/search", response_model=SearchResponse)
 async def search(koreanName: str = Query(..., example="김치찌개")):
-    ingredients, is_ambiguous = await search_faiss_cpu_db(koreanName, db)
+    ingredients, is_ambiguous, is_food = await search_faiss_cpu_db(koreanName, db)
     ingredients = ingredients.replace("[", "").replace("]", "").replace("'", "").split(",")
     
     for i in range(len(ingredients)):
         ingredients[i] = ingredients[i].strip()
     ingredient_responses = [{"englishName": ingredient} for ingredient in ingredients]
-    return SearchResponse(koreanName=koreanName, ingredients=ingredient_responses, isAmbiguous=is_ambiguous)
+    return SearchResponse(koreanName=koreanName, ingredients=ingredient_responses, isAmbiguous=is_ambiguous, isFood=is_food)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
