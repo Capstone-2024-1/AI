@@ -1,7 +1,8 @@
 import uvicorn
 from fastapi import FastAPI, Query
-from fastapi_services import load_faiss_cpu_db, search_faiss_cpu_db
-from fastapi_models import SearchResponse
+from fastapi_services import load_faiss_cpu_db, search_faiss_cpu_db, infer_ingredients
+from fastapi_models import SearchResponse, InferenceResponse
+
 
 app = FastAPI()
 db = None
@@ -20,6 +21,12 @@ async def search(koreanName: str = Query(..., example="김치찌개")):
         ingredients[i] = ingredients[i].strip()
     ingredient_responses = [{"englishName": ingredient} for ingredient in ingredients]
     return SearchResponse(koreanName=koreanName, ingredients=ingredient_responses, isAmbiguous=is_ambiguous, isFood=is_food)
+
+@app.get("/inference", response_model=InferenceResponse)
+async def inference(koreanName: str = Query(..., example="삼겹살김치찌개")):
+    ingredients = await infer_ingredients(koreanName)
+    ingredient_responses = [{"englishName": ingredient} for ingredient in ingredients]
+    return InferenceResponse(koreanName=koreanName, ingredients=ingredient_responses)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -8,3 +8,7 @@ class SearchResponse(BaseModel):
     ingredients: list[IngredientResponse]
     isAmbiguous: bool
     isFood: bool
+
+class InferenceResponse(BaseModel):
+    koreanName: str
+    ingredients: list[IngredientResponse]

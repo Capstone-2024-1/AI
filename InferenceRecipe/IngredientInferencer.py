@@ -1,6 +1,6 @@
 from openai import OpenAI
 from dotenv import load_dotenv
-from PromptProducer import PromptProducer
+from InferenceRecipe.PromptProducer import PromptProducer
 import os
 
 
@@ -45,6 +45,6 @@ class IngredientInferencer:
             seed=2061316412,
             temperature=0
         )
-        result = self.clean_inference_result(completion.choices[0].text)
+        result = await self.clean_inference_result(completion.choices[0].text)
         print(completion.choices[0])
         return result
