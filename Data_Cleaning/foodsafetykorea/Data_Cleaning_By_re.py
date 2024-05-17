@@ -58,3 +58,4 @@ with open('cleaned_ingredients_with_re.csv', 'w', encoding='utf-8', newline='') 
     writer.writerow(['Original Ingredient', 'Cleaned Ingredient'])  # 컬럼명 추가
     for original, cleaned in cleaned_ingredients:
         writer.writerow([original, cleaned])
+

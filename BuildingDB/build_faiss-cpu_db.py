@@ -2,7 +2,8 @@ import asyncio
 from konlpy.tag import Okt
 async def build_faiss_cpu_db(file_path):
     import csv
-    reader = csv.reader(open('../Data_Cleaning/10000recipe/Tagged_Ingredients.csv', 'r', encoding='utf-8'))
+    reader1 = csv.reader(open('../Data_Cleaning/10000recipe/Tagged_Ingredients.csv', 'r', encoding='utf-8'))
+    reader2 = csv.reader(open('../Data_Cleaning/foodsafetykorea/Tagged_Ingredients.csv', 'r', encoding='utf-8'))
     Documents = []
 
     class Document:
@@ -14,12 +15,19 @@ async def build_faiss_cpu_db(file_path):
             metadata_str = ', '.join([f'{key}: {value}' for key, value in self.metadata.items()])
             return f"Document(\n    page_content='{self.page_content}', \n    metadata={{\n        {metadata_str}\n    }}\n)"
 
-    for row in reader:
+    for idx, row in enumerate(reader1):
+        if idx == 0:
+            continue
         page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
         Documents.append(Document(page_content, metadata))
 
-    Documents = Documents[1:]
+    for idx, row in enumerate(reader2):
+        if idx == 0:
+            continue
+        page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
+        metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
+        Documents.append(Document(page_content, metadata))
 
     from langchain_text_splitters import CharacterTextSplitter
 
