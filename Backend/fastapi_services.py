@@ -2,10 +2,13 @@ import asyncio
 from konlpy.tag import Okt
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
+from InferenceRecipe import IngredientInferencer
 
 embeddings = HuggingFaceEmbeddings(
     model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}
 )
+
+ingredient_inferencer = IngredientInferencer.IngredientInferencer()
 
 async def load_faiss_cpu_db(db_index):
     db = FAISS.load_local(db_index, embeddings, allow_dangerous_deserialization=True)
@@ -27,3 +30,7 @@ async def search_faiss_cpu_db(query, db, k=5):
     ingredients = docs_and_scores[0][0].metadata['ingredients']
     ingredients = ingredients.replace('\b', '').replace('\n', '').replace('\t', '').strip()
     return ingredients, is_ambiguous, is_food
+
+async def infer_ingredients(koreanName):
+    ingredients = await ingredient_inferencer.infer(koreanName)
+    return ingredients
