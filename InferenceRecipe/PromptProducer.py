@@ -17,13 +17,13 @@ class PromptProducer:
 
     async def load_db_and_csv(self):
         self.db = await self.load_faiss_cpu_db(self.db_index)
-        self.load_foods_from_csv(self.csv_file)
+        await self.load_foods_from_csv(self.csv_file)
 
     async def load_faiss_cpu_db(self, db_index):
         db = FAISS.load_local(db_index, self.embeddings, allow_dangerous_deserialization=True)
         return db
 
-    def load_foods_from_csv(self, csv_file):
+    async def load_foods_from_csv(self, csv_file):
         with open(csv_file, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
             for row in reader:
