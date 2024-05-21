@@ -1,7 +1,12 @@
+import logging
+from logging.handlers import RotatingFileHandler
 import uvicorn
 from fastapi import FastAPI, Query
 from fastapi_services import load_faiss_cpu_db, search_faiss_cpu_db, infer_ingredients
 from fastapi_models import SearchResponse, InferenceResponse
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("uvicorn.info")
 
 app = FastAPI()
 db = None
@@ -33,4 +38,4 @@ async def inference(koreanName: str = Query(..., examples=["삼겹살김치찌�
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config="./logging_config.yaml")

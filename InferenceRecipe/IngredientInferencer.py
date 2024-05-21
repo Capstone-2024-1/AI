@@ -5,7 +5,7 @@ import os
 
 
 class IngredientInferencer:
-    def __init__(self):
+    def __init__(self, logger):
         load_dotenv()
         self.model = os.getenv('FINE_TUNED_MODEL_ID')
         self.api_key = os.getenv('OPENAI_API_KEY')
@@ -22,6 +22,7 @@ class IngredientInferencer:
                           'Potato', 'Radish', 'Sweet potato', 'wild chive', 'Other root vegetables', 'Ginger', 'Honey',
                           'Pepper', 'Other seasonings']
         self.prompt_producer = PromptProducer()
+        self.logger = logger
 
     async def clean_inference_result(self, input_str: str):
         lower_to_original = {item.lower(): item for item in self.tag_order}
@@ -46,5 +47,5 @@ class IngredientInferencer:
             temperature=0
         )
         result = await self.clean_inference_result(completion.choices[0].text)
-        print(completion.choices[0])
+        self.logger.log(food_name+" : "+str(result) + "\n" + str(completion.choices[0]) + "\n", True)
         return result
