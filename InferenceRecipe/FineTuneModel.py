@@ -11,15 +11,21 @@ if not api_key:
 
 client = OpenAI(api_key=api_key)
 
-def create_fine_tuning_job(training_file_id, model='davinci-002'):
+def create_fine_tuning_job(training_file_id, val_file_id, model='davinci-002'):
     response = client.fine_tuning.jobs.create(
         training_file=training_file_id,
-        model=model
+        validation_file=val_file_id,
+        model=model,
+        seed=2061316412,
+        hyperparameters={
+            "n_epochs":2
+        }
     )
     return response
 
 training_file_id = os.getenv('TRAINING_FILE_ID')
-response = create_fine_tuning_job(training_file_id)
+val_file_id = os.getenv('VAL_FILE_ID')
+response = create_fine_tuning_job(training_file_id, val_file_id)
 print("Fine-tuning job response:")
 print(response.model_dump_json(indent=2))
 
