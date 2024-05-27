@@ -37,4 +37,5 @@ async def search_faiss_cpu_db(query, db, k=5):
 
 async def infer_ingredients(koreanName):
     ingredients = await ingredient_inferencer.infer(koreanName)
+    ingredients = list(set(ingredients))
     return ingredients
