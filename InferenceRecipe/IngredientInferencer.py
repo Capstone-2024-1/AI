@@ -2,6 +2,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from InferenceRecipe.PromptProducer import PromptProducer
 import os
+import re
 
 
 class IngredientInferencer:
@@ -21,19 +22,21 @@ class IngredientInferencer:
                           'Horse meat', 'Almond', 'Hazelnut', 'Peanut', 'Pinenuts', 'Pistachio', 'Walnut', 'Other nuts',
                           'Potato', 'Radish', 'Sweet potato', 'wild chive', 'Other root vegetables', 'Ginger', 'Honey',
                           'Pepper', 'Other seasonings']
+        self.tag_order.sort(key=len, reverse=True)
         self.prompt_producer = PromptProducer()
         self.logger = logger
 
     async def clean_inference_result(self, input_str: str):
-        lower_to_original = {item.lower(): item for item in self.tag_order}
-
-        lower_input = input_str.lower()
-
+        pattern = r"\b(" + "|".join(re.escape(item.lower()) for item in self.tag_order) + r")\b"
+        matches = re.findall(pattern, input_str.lower())
         included_strings = []
 
-        for lower_item, original_item in lower_to_original.items():
-            if lower_item in lower_input:
-                included_strings.append(original_item)
+        for match in matches:
+            if match in included_strings:
+                continue
+            original = next((orig for orig, lower in map(lambda x: (x, x.lower()), self.tag_order) if lower == match), None)
+            if original:
+                included_strings.append(original)
 
         return included_strings
 

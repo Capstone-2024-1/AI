@@ -1,5 +1,4 @@
 import os
-import openai
 from openai import OpenAI
 from dotenv import load_dotenv
 import csv
@@ -40,7 +39,7 @@ def upload_file(file_path, purpose='fine-tune'):
         response = client.files.create(file=file, purpose=purpose)
     return response
 
-file_path = './dataset.jsonl'
+file_path = './v2_train.jsonl'
 response = upload_file(file_path)
 print("Response:")
 print(response.model_dump_json(indent=2))
