@@ -57,6 +57,7 @@
 김치만두, ['Wheat', 'Other seasonings', 'Green onion', 'Onion', 'Chilly', 'Other herbage crop']
 새우만두, ['Wheat', 'Other seasonings', 'Green onion', 'Onion', 'Other herbage crop', 'Shrimp']
 모둠만두, ['Wheat', 'Other seasonings', 'Green onion', 'Onion', 'Beans', 'Chilly', 'Other herbage crop', 'Pork']
+모듬만두, ['Wheat', 'Other seasonings', 'Green onion', 'Onion', 'Beans', 'Chilly', 'Other herbage crop', 'Pork']
 물만두, ['Wheat', 'Other seasonings', 'Green onion', 'Onion', 'Beans', 'Chilly', 'Pork']
 원조김밥, ['Radish', 'Rice',  'Other seafood', 'Other root vegetables', 'Eggs', 'Crab', 'Other fish', 'Cucumber', 'Beans', 'Other seasonings']
 김밥, ['Radish', 'Rice',  'Other seafood', 'Other root vegetables', 'Eggs', 'Crab', 'Other fish', 'Cucumber', 'Beans', 'Other seasonings']
