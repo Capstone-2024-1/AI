@@ -2,6 +2,7 @@
 김치찌개정식, ['Garlic', 'Chilly', 'Other herbage crop', 'Green onion', 'Rice']
 김치찌개 정식, ['Garlic', 'Chilly', 'Other herbage crop', 'Green onion', 'Rice']
 순두부찌개, ['Garlic', 'Beans', 'Chilly', 'Other herbage crop', 'Green onion', 'Onion', 'Eggs']
+순두부 찌개, ['Garlic', 'Beans', 'Chilly', 'Other herbage crop', 'Green onion', 'Onion', 'Eggs']
 순두부찌개정식, ['Garlic', 'Beans', 'Chilly', 'Other herbage crop', 'Green onion', 'Onion', 'Eggs', 'Rice']
 순두부찌개 정식, ['Garlic', 'Beans', 'Chilly', 'Other herbage crop', 'Green onion', 'Onion', 'Eggs', 'Rice']
 돼지불백, ['Pork', 'Beans', 'Other seasonings', 'Garlic', 'Green onion', 'Onion']
