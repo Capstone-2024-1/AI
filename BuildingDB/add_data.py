@@ -33,8 +33,6 @@ async def build_faiss_cpu_db():
         reader = f.readlines()
 
         for idx, row in enumerate(reader):
-            if idx == 0:
-                continue
             first_comma = row.find(',')
             food_name = row[:first_comma].strip()
             ingredients = row[first_comma + 1:].strip()
