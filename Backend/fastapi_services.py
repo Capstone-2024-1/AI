@@ -26,7 +26,7 @@ async def search_faiss_cpu_db(query, db, k=5):
     score = docs_and_scores[0][1]
     is_ambiguous = False
     is_food = True
-    if score > 0.08:
+    if score > 0.15:
         is_ambiguous = True
     if score > 0.50:
         is_food = False
