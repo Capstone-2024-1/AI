@@ -13,7 +13,10 @@ class PromptProducer:
         self.csv_file = csv_file
         self.embeddings = embeddings
         self.tag_order = """['Abalone', 'Crab', 'Mussel', 'Other crustaceans', 'Oyster', 'Shrimp', 'Other shellfish', 'Butter', 'Cheese', 'Milk', 'Soy milk', 'Other dairy products', 'Eggs', 'Mackerel', 'Other fish', 'Other mollusks', 'Other seafood', 'Chilly', 'Cucumber', 'Tomato', 'Other fruiting vegetables', 'Apple', 'Banana', 'Kiwi', 'Mango', 'Peach', 'Other fruits', 'Barley', 'Beans', 'Buckwheat', 'Corn', 'Rice', 'Wheat', 'Other grains', 'Chives', 'Garlic', 'Green onion', 'Onion', 'Other herbage crop', 'Beef', 'Chicken', 'Duck', 'Lamb', 'Pork', 'Horse meat', 'Almond', 'Hazelnut', 'Peanut', 'Pinenuts', 'Pistachio', 'Walnut', 'Other nuts', 'Potato', 'Radish', 'Sweet potato', 'wild chive', 'Other root vegetables', 'Ginger', 'Honey', 'Pepper', 'Other seasonings']"""
-        asyncio.run(self.load_db_and_csv())
+        if asyncio.get_event_loop().is_running():
+            asyncio.create_task(self.load_db_and_csv())
+        else:
+            asyncio.run(self.load_db_and_csv())
 
     async def load_db_and_csv(self):
         self.db = await self.load_faiss_cpu_db(self.db_index)
