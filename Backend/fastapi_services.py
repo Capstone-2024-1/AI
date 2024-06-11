@@ -18,7 +18,7 @@ async def load_faiss_cpu_db(db_index):
 
 async def search_faiss_cpu_db(query, db, k=5):
     original_query = query
-    query = ''.join(Okt().nouns(query)[::-1]) + query
+    query = ''.join(Okt().nouns(query.replace(' ', ''))[::-1]) + query.replace(' ', '')
     embedding_vector = await embeddings.aembed_query(query)
 
     docs_and_scores = await db.asimilarity_search_with_score(query, k=k)
