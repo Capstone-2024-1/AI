@@ -36,7 +36,7 @@ class PromptProducer:
         embeddings = HuggingFaceEmbeddings(
             model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}
         )
-        query = ''.join(Okt().nouns(query)[::-1]) + query
+        query = ''.join(Okt().nouns(query.replace(' ', ''))[::-1]) + query.replace(' ', '')
         embedding_vector = await embeddings.aembed_query(query)
 
         docs_and_scores = await self.db.asimilarity_search_with_score(query, k=k)
