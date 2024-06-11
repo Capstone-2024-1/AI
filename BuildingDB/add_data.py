@@ -33,7 +33,8 @@ async def build_faiss_cpu_db():
     for idx, row in enumerate(reader1):
         if idx == 0:
             continue
-        page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
+        name = row[0].replace(' ', '')
+        page_content = ''.join(Okt().nouns(name)[::-1]) + name
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
         if await check_ingredient(row[3]):
             Documents.append(Document(page_content, metadata))
@@ -43,7 +44,7 @@ async def build_faiss_cpu_db():
     for idx, row in enumerate(reader2):
         if idx == 0:
             continue
-        page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
+        page_content = ''.join(Okt().nouns(row[0].replace(' ', ''))[::-1]) + row[0].replace(' ', '')
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
         if await check_ingredient(row[3]):
             Documents.append(Document(page_content, metadata))
@@ -57,7 +58,7 @@ async def build_faiss_cpu_db():
             first_comma = row.find(',')
             food_name = row[:first_comma].strip()
             ingredients = row[first_comma + 1:].strip()
-            page_content = ''.join(Okt().nouns(food_name)[::-1]) + food_name
+            page_content = ''.join(Okt().nouns(food_name.replace(' ', ''))[::-1]) + food_name.replace(' ', '')
             metadata = {'name': food_name, 'food_name': food_name, 'ingredients': ingredients}
             if await check_ingredient(ingredients):
                 Documents.append(Document(page_content, metadata))
@@ -102,6 +103,7 @@ async def search_faiss_cpu_db(query, db, k=5):
     embeddings = HuggingFaceEmbeddings(
         model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}
     )
+    query = query.replace(' ', '')
     query = ''.join(Okt().nouns(query)[::-1]) + query
     embedding_vector = await embeddings.aembed_query(query)
 
