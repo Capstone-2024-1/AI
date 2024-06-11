@@ -1,5 +1,20 @@
 import asyncio
 from konlpy.tag import Okt
+ingredients = ['Fruits', 'Nuts', 'Soy milk', 'Vegetables', 'Meat', 'Grain', 'Eggs', 'Seafood', 'Seasonings', 'Dairy', 'Apple', 'Kiwi', 'Peach', 'Banana', 'Mango', 'Other fruits', 'Walnut', 'Almond', 'Pistachio', 'Hazelnut', 'Pinenuts', 'Peanut', 'Other nuts', 'herbage crop', 'Root Vegetables', 'Fruiting Vegetables', 'Onion', 'Garlic', 'Green onion', 'Chives', 'Other herbage crop', 'Potato', 'Sweet potato', 'Radish', 'wild chive', 'Other root vegetables', 'Cucumber', 'Chilly', 'Tomato', 'Other Fruiting Vegetables', 'Rice', 'Wheat', 'Barley', 'Corn', 'Buckwheat', 'Beans', 'Other Grains', 'Beef', 'Pork', 'Poultry', 'Lamb', 'Horse Meat', 'Chicken', 'Duck', 'fish', 'Mackerel', 'Other Fish', 'Other Mollusks', 'Crustaceans', 'Shrimp', 'Crab', 'Other Crustaceans', 'Shellfish', 'Abalone', 'Oyster', 'Mussel', 'Other Shellfish', 'Other seafood', 'Pepper', 'Ginger', 'Honey', 'Asafoetida', 'Other seasonings', 'Milk', 'Cheese', 'Butter', 'Other dairy products']
+ingredients = [i.lower() for i in ingredients]
+
+async def check_ingredient(ingredient):
+    ingredient_list = eval(ingredient)
+    ingredient_list = [i.lower() for i in ingredient_list]
+    check = True
+    invalid_list = []
+    for i in ingredient_list:
+        if i not in ingredients:
+            check = False
+            invalid_list.append(i)
+    if invalid_list: print(invalid_list)
+    return check
+
 async def build_faiss_cpu_db():
     import csv
     reader1 = csv.reader(open('../Data_Cleaning/10000recipe/Tagged_Ingredients.csv', 'r', encoding='utf-8'))
@@ -18,16 +33,23 @@ async def build_faiss_cpu_db():
     for idx, row in enumerate(reader1):
         if idx == 0:
             continue
-        page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
+        name = row[0].replace(' ', '')
+        page_content = ''.join(Okt().nouns(name)[::-1]) + name
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
-        Documents.append(Document(page_content, metadata))
+        if await check_ingredient(row[3]):
+            Documents.append(Document(page_content, metadata))
+        else:
+            print(f"Error: {row[0]}")
 
     for idx, row in enumerate(reader2):
         if idx == 0:
             continue
-        page_content = ''.join(Okt().nouns(row[0])[::-1]) + row[0]
+        page_content = ''.join(Okt().nouns(row[0].replace(' ', ''))[::-1]) + row[0].replace(' ', '')
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
-        Documents.append(Document(page_content, metadata))
+        if await check_ingredient(row[3]):
+            Documents.append(Document(page_content, metadata))
+        else:
+            print(f"Error: {row[0]}")
 
     with open('additional.txt', 'r', encoding='utf-8') as f:
         reader = f.readlines()
@@ -36,9 +58,13 @@ async def build_faiss_cpu_db():
             first_comma = row.find(',')
             food_name = row[:first_comma].strip()
             ingredients = row[first_comma + 1:].strip()
-            page_content = ''.join(Okt().nouns(food_name)[::-1]) + food_name
+            page_content = ''.join(Okt().nouns(food_name.replace(' ', ''))[::-1]) + food_name.replace(' ', '')
             metadata = {'name': food_name, 'food_name': food_name, 'ingredients': ingredients}
-            Documents.append(Document(page_content, metadata))
+            if await check_ingredient(ingredients):
+                Documents.append(Document(page_content, metadata))
+            else:
+                print(f"Error: {food_name}")
+
 
     from langchain_text_splitters import CharacterTextSplitter
 
@@ -77,6 +103,7 @@ async def search_faiss_cpu_db(query, db, k=5):
     embeddings = HuggingFaceEmbeddings(
         model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}
     )
+    query = query.replace(' ', '')
     query = ''.join(Okt().nouns(query)[::-1]) + query
     embedding_vector = await embeddings.aembed_query(query)
 
