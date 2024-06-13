@@ -2,6 +2,36 @@ import asyncio
 from konlpy.tag import Okt
 ingredients = ['Fruits', 'Nuts', 'Soy milk', 'Vegetables', 'Meat', 'Grain', 'Eggs', 'Seafood', 'Seasonings', 'Dairy', 'Apple', 'Kiwi', 'Peach', 'Banana', 'Mango', 'Other fruits', 'Walnut', 'Almond', 'Pistachio', 'Hazelnut', 'Pinenuts', 'Peanut', 'Other nuts', 'herbage crop', 'Root Vegetables', 'Fruiting Vegetables', 'Onion', 'Garlic', 'Green onion', 'Chives', 'Other herbage crop', 'Potato', 'Sweet potato', 'Radish', 'wild chive', 'Other root vegetables', 'Cucumber', 'Chilly', 'Tomato', 'Other Fruiting Vegetables', 'Rice', 'Wheat', 'Barley', 'Corn', 'Buckwheat', 'Beans', 'Other Grains', 'Beef', 'Pork', 'Poultry', 'Lamb', 'Horse Meat', 'Chicken', 'Duck', 'fish', 'Mackerel', 'Other Fish', 'Other Mollusks', 'Crustaceans', 'Shrimp', 'Crab', 'Other Crustaceans', 'Shellfish', 'Abalone', 'Oyster', 'Mussel', 'Other Shellfish', 'Other seafood', 'Pepper', 'Ginger', 'Honey', 'Asafoetida', 'Other seasonings', 'Milk', 'Cheese', 'Butter', 'Other dairy products']
 ingredients = [i.lower() for i in ingredients]
+okt = Okt()
+
+async def make_page_content(text, okt=Okt()):
+    text = text.replace(' ', '')
+    nouns = okt.nouns(text)
+    index = 0
+    corrected_nouns = []
+
+    for noun in nouns:
+        if text[index:index + len(noun)] == noun:
+            corrected_nouns.append(noun)
+            index += len(noun)
+        else:
+            now_noun = ''
+            for i in range(index, len(text)):
+                now_noun += text[i]
+                index += 1
+                if text[index:index + len(noun)] == noun:
+                    corrected_nouns.append(now_noun)
+                    break
+            corrected_nouns.append(noun)
+            index += len(noun)
+
+    if index < len(text):
+        remaining_part = text[index:]
+        remaining_nouns = okt.nouns(remaining_part)
+        corrected_nouns.extend(remaining_nouns)
+
+    result = ''.join(corrected_nouns[::-1])+text
+    return result
 
 async def check_ingredient(ingredient):
     ingredient_list = eval(ingredient)
@@ -33,8 +63,7 @@ async def build_faiss_cpu_db():
     for idx, row in enumerate(reader1):
         if idx == 0:
             continue
-        name = row[0].replace(' ', '')
-        page_content = ''.join(Okt().nouns(name)[::-1]) + name
+        page_content = await make_page_content(row[0])
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
         if await check_ingredient(row[3]):
             Documents.append(Document(page_content, metadata))
@@ -44,7 +73,7 @@ async def build_faiss_cpu_db():
     for idx, row in enumerate(reader2):
         if idx == 0:
             continue
-        page_content = ''.join(Okt().nouns(row[0].replace(' ', ''))[::-1]) + row[0].replace(' ', '')
+        page_content = await make_page_content(row[0])
         metadata = {'name': row[0], 'food_name': row[1], 'ingredients': row[3]}
         if await check_ingredient(row[3]):
             Documents.append(Document(page_content, metadata))
@@ -58,7 +87,7 @@ async def build_faiss_cpu_db():
             first_comma = row.find(',')
             food_name = row[:first_comma].strip()
             ingredients = row[first_comma + 1:].strip()
-            page_content = ''.join(Okt().nouns(food_name.replace(' ', ''))[::-1]) + food_name.replace(' ', '')
+            page_content = await make_page_content(food_name)
             metadata = {'name': food_name, 'food_name': food_name, 'ingredients': ingredients}
             if await check_ingredient(ingredients):
                 Documents.append(Document(page_content, metadata))
@@ -104,7 +133,7 @@ async def search_faiss_cpu_db(query, db, k=5):
         model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}
     )
     query = query.replace(' ', '')
-    query = ''.join(Okt().nouns(query)[::-1]) + query
+    query = await make_page_content(query)
     embedding_vector = await embeddings.aembed_query(query)
 
     docs_and_scores = await db.asimilarity_search_with_score(query, k=k)
