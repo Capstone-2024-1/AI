@@ -6,6 +6,37 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
+okt = Okt()
+
+async def make_page_content(text, okt=Okt()):
+    text = text.replace(' ', '')
+    nouns = okt.nouns(text)
+    index = 0
+    corrected_nouns = []
+
+    for noun in nouns:
+        if text[index:index + len(noun)] == noun:
+            corrected_nouns.append(noun)
+            index += len(noun)
+        else:
+            now_noun = ''
+            for i in range(index, len(text)):
+                now_noun += text[i]
+                index += 1
+                if text[index:index + len(noun)] == noun:
+                    corrected_nouns.append(now_noun)
+                    break
+            corrected_nouns.append(noun)
+            index += len(noun)
+
+    if index < len(text):
+        remaining_part = text[index:]
+        remaining_nouns = okt.nouns(remaining_part)
+        corrected_nouns.extend(remaining_nouns)
+
+    result = ''.join(corrected_nouns[::-1])+text
+    return result
+
 class PromptProducer:
     def __init__(self, embeddings = HuggingFaceEmbeddings(model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}), db_index='../BuildingDB/SAFEAT_ASYNC_DB_INDEX', csv_file='../BuildingFineTuneDataSet/merged_ingredients.csv'):
         self.foods = {}
@@ -36,7 +67,7 @@ class PromptProducer:
         embeddings = HuggingFaceEmbeddings(
             model_name="jhgan/ko-sroberta-multitask", encode_kwargs={'normalize_embeddings': True}
         )
-        query = ''.join(Okt().nouns(query)[::-1]) + query
+        query = await make_page_content(query, okt)
         embedding_vector = await embeddings.aembed_query(query)
 
         docs_and_scores = await self.db.asimilarity_search_with_score(query, k=k)
