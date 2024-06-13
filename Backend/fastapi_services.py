@@ -1,6 +1,4 @@
 import asyncio
-import time
-
 from konlpy.tag import Okt
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -34,8 +32,7 @@ async def search_faiss_cpu_db(query, db, k=5):
         is_food = False
     ingredients = docs_and_scores[0][0].metadata['ingredients']
     ingredients = ingredients.replace('\b', '').replace('\n', '').replace('\t', '').strip()
-    log_msg = str(time.time())+ " | " +  "검색어 : " + original_query + " | " + "검색된 음식 : " + docs_and_scores[0].page_content + "\n" + "검색된 재료 : " + ingredients + "\n" + "L2거리 : " + str(score) + " | " + "is_ambiguous : " + str(is_ambiguous) + " | " + "is_food : " + str(is_food)
-    logger.log(log_msg, False)
+    logger.log(original_query + " : " + str(ingredients) + "\n" + str(docs_and_scores[0]) + "\n", False)
     return ingredients, is_ambiguous, is_food
 
 async def infer_ingredients(koreanName):
