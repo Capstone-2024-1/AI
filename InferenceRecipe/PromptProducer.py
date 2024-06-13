@@ -46,20 +46,18 @@ class PromptProducer:
 
         searched = []
         cnt = 0
-        for i in range(1, len(docs_and_scores)):
-            score = docs_and_scores[0][1]
-            name = docs_and_scores[0][0].metadata['name']
-
-            if score > 0.3:
+        for i in range(0, len(docs_and_scores)):
+            score = docs_and_scores[i][1]
+            name = docs_and_scores[i][0].metadata['name']
+            tags = docs_and_scores[i][0].metadata['ingredients']
+            if score > 0.35:
                 break
-            searched_name = docs_and_scores[i][0].metadata['name']
-            if searched_name not in self.foods.keys():
-                continue
+            food_info = "<food_name>"+name+"</food_name><tags>"+tags+"</tags>"
+
             cnt += 1
             if cnt > 3:
                 break
-
-            searched.append(self.foods[searched_name])
+            searched.append(food_info)
 
         result = "Please return only the food ingredients for " + query + " in the form of one python list that corresponds to the tags below.\n"
         result += self.tag_order + '\n'
