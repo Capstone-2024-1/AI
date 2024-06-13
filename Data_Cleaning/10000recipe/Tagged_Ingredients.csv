@@ -749,7 +749,7 @@ ABC주스,해독주스-ABC주스 [다이어트],"['당근', '사과', '비트', 
 두부면치즈오븐스파게티,에어프라이어 두부면 치즈 오븐 스파게티,"['', '간장', '토마토', '버터', '치즈', '소고기', '코코넛']","['Tomato', 'Beef', 'Butter', 'Beans']"
 달걀토스트샌드위치,아침식사대용 달걀토스트샌드위치,"['', '양상추', '당근', '계란', '후추', '식용유', '소금']","['Other herbage crop', 'Pepper', 'Eggs', 'Other seasonings']"
 식빵피자고로케,식빵피자 고로케,"['', '브로콜리', '빵', '햄', '당근', '치즈', '파프리카', '양파', '토마토']","['Other fruiting vegetables', 'Milk', 'Tomato', 'Butter', 'Eggs', 'Pork', 'Other herbage crop', 'Wheat', 'Onion']"
-관자새우크림파스타,관자 새우 크림 파스타 만들기,"['', '관자', '새우', '우유', '생크림', '마늘', '양파', '고추', '버섯']","['Milk', 'Shrimp', 'Chilly', 'Onion', 'Garlic', 'Other dairy products']"
+관자새우크림파스타,관자 새우 크림 파스타 만들기,"['', '관자', '새우', '우유', '생크림', '마늘', '양파', '고추', '버섯']","['Milk', 'Shrimp', 'Chilly', 'Onion', 'Garlic', 'Other dairy products', 'Wheat', 'Eggs']"
 무화과크림치즈토스트,오늘뭐먹지 무화과크림치즈토스트 만들기,"['', '바나나', '호밀', '치즈', '무화과']","['Other fruits', 'Banana', 'Butter', 'Buckwheat', 'Other root vegetables']"
 리얼고구마빵,진짜 고구마인가? 진짜 감자인가? 헷갈리는 리얼고구마빵 & 리얼 감자빵 ,"['', '쌀', '고구마', '마요네즈', '버터', '후추', '계란', '우유', '식용유', '소금', '감자']","['Milk', 'Sweet potato', 'Butter', 'Rice', 'Potato', 'Eggs', 'Other seasonings', 'Other root vegetables', 'Pepper']"
 크림치즈당근컵케이크,크림치즈 당근 컵케이크,"['', '아몬드', '설탕', '호두', '당근', '계란', '치즈', '식용유', '생크림', '밀']","['Wheat', 'Butter', 'Almond', 'Eggs', 'Other seasonings', 'Other dairy products']"
