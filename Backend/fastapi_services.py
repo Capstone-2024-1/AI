@@ -15,7 +15,7 @@ logger = ResultLogger()
 ingredient_inferencer = IngredientInferencer.IngredientInferencer(logger)
 okt = Okt()
 
-def make_page_content(text, okt=Okt()):
+async def make_page_content(text, okt=Okt()):
     text = text.replace(' ', '')
     nouns = okt.nouns(text)
     index = 0
