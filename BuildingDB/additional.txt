@@ -110,3 +110,7 @@
 대패삼겹떡볶이, ['Shrimp', 'Rice', 'Other seasonings', 'Green onion', 'Onion', 'Beans', 'Other herbage crop', 'Chilly', 'Other root vegetables', 'Other fish', 'Pork']
 불고기크림파스타, ['Milk', 'Garlic', 'Butter', 'Eggs', 'Other seasonings', 'Onion', 'Other herbage crop', 'Pepper', 'Wheat', 'Pork', 'Green onion', 'Beans']
 라제비, ['Wheat', 'Radish', 'Other seasonings', 'Other fish', 'Beans', 'Eggs', 'Chilly', 'Beans', 'Pork', 'Green onion', 'Onion', 'Other herbage crop']
+치킨, ['Milk', 'Wheat', 'Eggs', 'Chicken', 'Other root vegetables', 'Pepper', 'Other seasonings']
+후라이드치킨, ['Milk', 'Wheat', 'Eggs', 'Chicken', 'Other root vegetables', 'Pepper', 'Other seasonings']
+옛날통닭, ['Milk', 'Wheat', 'Eggs', 'Chicken', 'Other root vegetables', 'Pepper', 'Other seasonings']
+옛날치킨, ['Milk', 'Wheat', 'Eggs', 'Chicken', 'Other root vegetables', 'Pepper', 'Other seasonings']
